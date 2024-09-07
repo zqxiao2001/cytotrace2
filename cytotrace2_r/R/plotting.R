@@ -40,7 +40,8 @@ plotData <- function(cytotrace2_result,
                     expression_data = NULL,
                     is_seurat = FALSE,
                     pc_dims = 30,
-                    seed = 14) {
+                    seed = 14,
+                    use_harmony = FALSE) {
 
   set.seed(seed)
   
@@ -98,7 +99,12 @@ plotData <- function(cytotrace2_result,
   invisible(
     capture.output(
       # visualize clustering
-      seurat <- RunUMAP(seurat, dims = 1:pc_dims) # default to 30
+      if(use_harmony){
+        seurat <- RunUMAP(seurat, dims = 1:pc_dims,reduction="harmony")
+      }
+      else{
+        seurat <- RunUMAP(seurat, dims = 1:pc_dims) # default to 30
+      }
     )
   )
     }) })
